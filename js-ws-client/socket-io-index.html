@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO 채팅</title>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Socket.IO 채팅</h1>
+  <input type="text" id="messageInput" placeholder="메시지를 입력하세요" />
+  <button onclick="sendMessage()">전송</button>
+  <div id="chat"></div>
+
+  <script>
+    // Socket.IO 서버에 연결
+    const socket = io('http://localhost:3000');
+
+    socket.on('chat message', (msg) => {
+      const chat = document.getElementById('chat');
+      const newMessage = document.createElement('p');
+      newMessage.textContent = msg;
+      chat.appendChild(newMessage);
+    });
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value;
+      socket.emit('chat message', message); // 서버에 메시지 전송
+      input.value = ''; // 입력 필드 비우기
+    }
+  </script>
+</body>
+</html>
